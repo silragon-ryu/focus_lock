@@ -21,7 +21,7 @@ class ZenFocus(QWidget):
     """
     A PyQt5 application designed to help users focus by locking them into
     a PDF viewer and Spotify, while blocking common system shortcuts.
-    This version includes taskbar hiding and an F5 shortcut for Spotify.
+    This version includes taskbar hiding and an F6 shortcut for Spotify.
     """
     def __init__(self):
         super().__init__()
@@ -35,7 +35,7 @@ class ZenFocus(QWidget):
         self.session_active = False
 
         self.spotify_window_ref = None # Reference to the Spotify window object
-        self.f6_hotkey_id = None      # ID for the F5 hotkey hook
+        self.f6_hotkey_id = None      # ID for the F6 hotkey hook
 
         # Apply the new stylesheet
         self.setStyleSheet(self.get_stylesheet())
@@ -328,7 +328,7 @@ class ZenFocus(QWidget):
                 print(f"Error showing taskbar: {e}")
 
     def activate_spotify_hotkey_callback(self):
-        """Callback function for the F5 hotkey to activate Spotify."""
+        """Callback function for the F6 hotkey to activate Spotify."""
         if self.session_active and self.spotify_window_ref and isinstance(self.spotify_window_ref, gw.Win32Window):
             try:
                 if self.spotify_window_ref.isMinimized:
@@ -429,7 +429,7 @@ class ZenFocus(QWidget):
         # Store spotify_window_ref for the hotkey callback
         self.spotify_window_ref = spotify_window
         if self.spotify_window_ref:
-            self.f5_hotkey_id = keyboard.add_hotkey('f5', self.activate_spotify_hotkey_callback)
+            self.f6_hotkey_id = keyboard.add_hotkey('f6', self.activate_spotify_hotkey_callback)
             print("F6 hotkey registered for Spotify.")
 
 
@@ -526,14 +526,14 @@ class ZenFocus(QWidget):
         self.unblock_shortcuts() # Ensure shortcuts are unblocked immediately
         self._show_taskbar()     # Show taskbar at session end
 
-        # Unregister F5 hotkey if it was registered
-        if self.f5_hotkey_id:
+        # Unregister F6 hotkey if it was registered
+        if self.f6_hotkey_id:
             try:
-                keyboard.remove_hotkey(self.f5_hotkey_id)
-                self.f5_hotkey_id = None
-                print("F5 hotkey unregistered.")
+                keyboard.remove_hotkey(self.f6_hotkey_id)
+                self.f6_hotkey_id = None
+                print("F6 hotkey unregistered.")
             except Exception as e:
-                print(f"Error unregistering F5 hotkey: {e}")
+                print(f"Error unregistering F6 hotkey: {e}")
         self.spotify_window_ref = None # Clear reference to Spotify window
 
         # Restore window state and re-enable UI controls
@@ -575,7 +575,7 @@ class ZenFocus(QWidget):
         """
         if sys.platform.startswith('win'):
             # User-provided specific path from previous conversation
-            user_spotify_path = r"C:\Users\ahmed\AppData\Roaming\Spotify\Spotify.exe"
+            user_spotify_path = r"Spotify\Spotify.exe"
             if os.path.exists(user_spotify_path):
                 return user_spotify_path
 
